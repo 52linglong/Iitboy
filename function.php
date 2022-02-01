@@ -301,10 +301,10 @@ function iitboyDice_twitter()
  * @param int $logid
  * @return bool|mixed|string
  */
-function iitboyDice_log_img($logid = 1)
+function iitboyDice_log_img($logid = 0)
 {
     $db = Database::getInstance();
-    $row = $db->fetch_array($db->query("SELECT cover,content FROM " . DB_PREFIX . "blog WHERE gid='$logid'"));
+    $row = $db->fetch_array($db->query("SELECT * FROM " . DB_PREFIX . "blog WHERE gid='$logid'"));
     return $row['cover'] ? BLOG_URL . substr($row['cover'], 3, strlen($row['cover'])) : (iitboyDice_log_img_attachment($logid) ?: (iitboyDice_log_img_content($row['content']) ?: iitboyDice_log_img_random($logid)));
 }
 
@@ -316,7 +316,7 @@ function iitboyDice_log_img($logid = 1)
 function iitboyDice_log_img_attachment($logid)
 {
     $db = Database::getInstance();
-    $row = $db->fetch_array($db->query("SELECT filepath FROM " . DB_PREFIX . "attachment WHERE blogid=" . $logid . " LIMIT 0,1"));
+    $row = $db->fetch_array($db->query("SELECT filepath FROM " . DB_PREFIX . "attachment WHERE blogid=" . $logid . " LIMIT 1"));
     return $row['filepath'] ? BLOG_URL . substr($row['filepath'], 3, strlen($row['filepath'])) : false;
 }
 
