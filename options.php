@@ -30,7 +30,7 @@ $options = array(
             'cdnjs' => 'CDNJS',
             'close' => '关闭',
         ),
-        'default' => 'BootCDN',
+        'default' => 'bootcdn',
         'description' => '稳定、快速、免费的前端开源项目 CDN 加速服务，关闭则使用本地资源'
     ),
     'csshake' => array(
