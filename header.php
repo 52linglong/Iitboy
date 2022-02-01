@@ -1,14 +1,15 @@
 <?php
 /*
-Template Name:寒光唯美式V2.4.2
-Description:二次元，小清新 唯美~~~ 
-Version:<span style="color:#E60026;">响应式模版，自适应手机 电脑 平板等。完美兼容多说。<<br>修改embed.js的多说ID（多说以已经失效）<br>必装插件：主题编辑 多说 <br>QQ:987284242 请支持正版模版</span>
-Author:寒光
-Author Url:http://www.Dxoca.cn/
+Template Name:Dice寒光唯美式
+Version:v220201
+Description:一款二次元唯美响应式模版，采用 HTML5 + CSS3 响应式、智能化设计。在手机、平板、PC 上都能完美显示。<br><br><span style="color:#00a71e;">√为阅读而设计，为写作而存在！</span> &nbsp;&nbsp; ★更新时间：<span style="color:#00A04B;">2022年02月01日</span><br><br><a href="http://www.dxoca.cn/" target="_blank">寒光站点</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/" target="_blank">Dice 站点</a> &nbsp;&nbsp;  <a href="https://blog.52linglong.com/theme/iitboyDice.html" target="_blank">使用说明</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/about.html" target="_blank">关于我</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/donate.html" target="_blank" style="color: red;font-weight: bold;border: 1px solid;padding: 2px 5px;border-radius: 3px;">赞助支持</a>
+Author:寒光&Dice
+Author Url:http://blog.52linglong.com/
 Sidebar Amount:1
 */
-
-if(!defined('EMLOG_ROOT')) {exit('error!');}
+if (!defined('EMLOG_ROOT')) {
+    exit('error!');
+}
 require_once View::getView('module');
 ?><!--
 //
@@ -135,74 +136,82 @@ require_once View::getView('module');
 //                  别人笑我忒疯癫，我笑自己命太贱；  
 //                  不见满街漂亮妹，哪个归得程序员？
 
-<!-- <?php echo $site_title; ?>欢迎您！ <?php echo BLOG_URL; ?>
- -->
+ <?php echo $site_title; ?>欢迎您！ <?php echo BLOG_URL; ?>
+-->
 <!doctype html>
 <html>
-  
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <title>
-      <?php echo $site_title; ?></title>
+    <title><?php echo $site_title; ?></title>
     <meta name="keywords" content="<?php echo $site_key; ?>">
     <meta name="description" content="<?php echo $site_description; ?>">
     <meta name="generator" content="emlog iitboy2.3.4">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="bookmark" href="/favicon.ico" />
-    <link href="<?php echo TEMPLATE_URL; ?>main.css?" rel="stylesheet" type="text/css">
-    <link href="<?php echo TEMPLATE_URL; ?>js/csshake.min.css" rel="stylesheet">
-    <link href="<?php echo TEMPLATE_URL; ?>js/animate.min.css" rel="stylesheet">
-    <link href="http://libs.baidu.com/fontawesome/4.2.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
-    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="<?php echo BLOG_URL; ?>xmlrpc.php?rsd">
-    <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="<?php echo BLOG_URL; ?>wlwmanifest.xml">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <?php echo iitboyDice_dns_prefetch(); ?>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="bookmark" href="/favicon.ico">
     <link rel="alternate" type="application/rss+xml" title="RSS" href="<?php echo BLOG_URL; ?>rss.php">
-    <script src="<?php echo BLOG_URL; ?>include/lib/js/common_tpl.js" type="text/javascript"></script>
-    <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
-	  <script language="javascript" src="/content/plugins/Fw_player/js/player.js"></script>
-    <script type="text/javascript" src="<?php echo TEMPLATE_URL; ?>js/pjax.js"></script>
-    <script>$(document).pjax('a[target!=_blank]', '#contentleftt', {fragment: '#contentleftt',timeout: 8000});
-      $(document).on('pjax:send',function() {
-        $(".loading,.loading2").css("display", "block");
-        $(".donghua").removeClass("animated bounceInDown");
-      });
-      $(document).on('pjax:complete',function() {
-        $(".loading,.loading2").css("display", "none");
-        $(".donghua").addClass("animated bounceInDown").show();
-		pajx_loadDuodsuo();
-        jQuery.getScript('<?php echo TEMPLATE_URL; ?>js/iitboy.js');
-      });</script>
-	  
-  </head>
-	
-  <body>
-    <div class="bg-fixed"></div>
-    <div class="donghua">
-      <div id="iitboy_logo">
-        <a href="/" title="寒光博客">
-          <img src="<?php echo TEMPLATE_URL; ?>images/logo.png" class="animated tada"></a>
-        <br>
-        <div id="tock" style="top:-3px">
-          <div class="hibox">
-            <div class="hi container">
-              <a href="javascript:;" onclick="getkoto();" title="换一条">
-                <span class="hitokoto" id="hitokoto">Loading...（欢迎来到寒光博客~我是会动的哟！）</span></a>
+    <?php echo iitboyDice_assets('css'); ?>
+    <link rel="stylesheet" href="<?php echo TEMPLATE_URL; ?>main.css">
+    <?php echo iitboyDice_assets('js'); ?>
+    <script>
+        $(document).pjax('a[target!=_blank]', '#contentleftt', {fragment: '#contentleftt', timeout: 8000});
+        $(document).on('pjax:send', function () {
+            $(".loading,.loading2").css("display", "block");
+            $(".donghua").removeClass("animate__animated animate__bounceInDown");
+        });
+        $(document).on('pjax:complete', function () {
+            $(".loading,.loading2").css("display", "none");
+            $(".donghua").addClass("animate__animated animate__bounceInDown").show();
+            jQuery.getScript('<?php echo TEMPLATE_URL; ?>js/iitboy.min.js');
+        });
+
+        function sendinfo(url, node) {
+            // 日历生成和翻页
+            $("#" + node).load(url)
+        }
+
+        const HINT = <?php echo _g('hint') == 'open' ? 'true' : 'false'; ?>;
+        const LAZYLOAD = <?php echo _g('lazyload') == 'open' ? 'true' : 'false'; ?>;
+        const CHAFFLE = <?php echo _g('chaffle') == 'open' ? 'true' : 'false'; ?>;
+    </script>
+    <?php doAction('index_head'); ?>
+</head>
+
+<body>
+<div class="bg-fixed"></div>
+<div class="donghua">
+    <div id="iitboy_logo">
+        <?php if (_g('logo') == 'open'): ?>
+            <a href="/" title="<?php echo $blogname; ?>">
+                <img src="<?php echo _g('logoimg'); ?>" class="animate__animated animate__tada">
+            </a>
+            <br>
+        <?php endif; ?>
+        <?php if (_g('hitokoto') == 'open'): ?>
+            <div id="tock">
+                <div class="hibox">
+                    <div class="hi container">
+                        <a href="javascript:;" onclick="getkoto();" title="换一条">
+                            <span class="hitokoto" id="hitokoto">Loading...（欢迎来到<?php echo $blogname; ?>~ 我是会动的哟！）</span></a>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div id="hjsbox"></div>
-      <div id="sousuo2" title="在搜索框中输入关键字后，按“回车”即可搜到结果。">
+        <?php endif; ?>
+    </div>
+    <div id="hjsbox"></div>
+    <div id="sousuo2" title="在搜索框中输入关键字后，按“回车”即可搜到结果。">
         <form name="keyform" method="get" action="<?php echo BLOG_URL; ?>index.php">
-          <input name="keyword" type="search" placeholder="框中输文字，回车索结果。"></form>
-      </div>
-      <div id="linkk">
+            <input name="keyword" type="search" placeholder="框中输文字，回车索结果。"></form>
+    </div>
+    <div id="linkk">
         <div id="menu" style="background-color: rgba(0,0,0,0.6);">
-          <?php blog_navi();?></div>
+            <?php blog_navi(); ?></div>
         <div id="menu2">
-          <?php blog_navi2();?></div>
-        <?php echo index_t(1); ?>
+            <?php blog_navi2(); ?></div>
+        <?php echo iitboyDice_twitter(); ?>
 		
 		
 		

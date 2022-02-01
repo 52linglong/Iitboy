@@ -22,7 +22,7 @@ if(!defined('EMLOG_ROOT')) {exit('error!');}
 	<div class="main_img">
     <img src="<?php iitboy_weiyu($value['content']); ?>">
     </div>
-    <div class="post1"><span class="hint--top  hint--rounded chaffle" data-hint="<?php echo $user_cache[1]['des']; ?>" data-lang="zh"><?php echo $author; ?></span><br><?php echo $val['t'].'<br><br>'.$img;?></div>
+    <div class="post1"><span class="hint--top  hint--rounded chaffle" data-hint="<?php echo $user_cache[1]['des']; ?>" data-chaffle="zh"><?php echo $author; ?></span><br><?php echo $val['t'].'<br><br>'.$img;?></div>
     <div class="clear"></div>
     <div class="bttome">
        <!-- <p class="post"><a href="javascript:loadr('<?php echo DYNAMIC_BLOGURL; ?>?action=getr&tid=<?php echo $tid;?>','<?php echo $tid;?>');">回复 (<span id="rn_<?php echo $tid;?>"><?php echo $val['replynum'];?></span>)</a></p>
