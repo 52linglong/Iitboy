@@ -243,6 +243,71 @@ function goTop(acceleration, time) {
 })(window, jQuery);
 
 
+/* 回复评论 */
+function commentReply(pid, c) {
+    const response = document.getElementById('comment-post');
+    document.getElementById('comment-pid').value = pid;
+    document.getElementById('cancel-reply').style.display = '';
+    c.parentNode.parentNode.appendChild(response);
+}
+
+/* 取消评论 */
+function cancelReply() {
+    const commentPlace = document.getElementById('comment-place'), response = document.getElementById('comment-post');
+    document.getElementById('comment-pid').value = 0;
+    document.getElementById('cancel-reply').style.display = 'none';
+    commentPlace.appendChild(response);
+}
+
+/* 刷新验证码 */
+function checkcode($t) {
+    const timestamp = new Date().getTime();
+    $t.attr("src", "/include/lib/checkcode.php?" + timestamp);
+}
+
+let comTip = '';
+
+function postComment(value) {
+    if (value === 'judge') {
+        let cnReg = /[\u4e00-\u9fa5]/;
+        let mailReg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/i;
+
+        let isCn = $('#commentform').attr('is-chinese');
+        let comContent = $('.from-comment-content').val();
+        let name = $('#fromcomname').val();
+        let mail = $('#fromcommail').val();
+        let imgcode = $('input[name="imgcode"]').val();
+
+        if (isCn == 'y' && !cnReg.test(comContent)) {
+            comTip = "评论内容需要包含中文！";
+        } else if (typeof mail !== "undefined" && mail != '' && !mailReg.test(mail)) {
+            comTip = "邮箱格式错误！";
+        } else if (typeof imgcode !== "undefined" && imgcode == '') {
+            comTip = "请输入验证码！";
+        } else {
+            comTip = '';
+        }
+    } else {
+        if (comTip != '') {
+            alert(comTip);
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+$(document).ready(function () {
+    $("#commentform").attr("onsubmit", "return postComment()");
+    $(".from-comment-content").blur(function () {
+        postComment('judge');
+    });
+    $("#captcha").click(function () {
+        checkcode($(this));
+    });
+});
+
+// 自定义
 $(function () {
     if (LAZYLOAD) {
         // 图片延迟加载

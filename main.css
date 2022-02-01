@@ -1599,7 +1599,7 @@ a img.aligncenter {
     font-size: 12px;
     cursor: pointer;
     _cursor: hand;
-    padding-right: 10%
+    /*padding-right: 10%*/
 }
 
 #contentleftt .comment-post .cancel-reply:hover {

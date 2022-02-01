@@ -403,7 +403,7 @@ function iitboyDice_log_sort_all($sortid)
 function iitboyDice_log_baidu($logid)
 {
     global $CACHE;
-    $logsite_cache = $CACHE->readCache('logsite');
+    $logsite_cache = @$CACHE->readCache('logsite');
     if (empty($logsite_cache[$logid]['baidu']) || $logsite_cache[$logid]['baidu'] == 'unknown') {
         $head = array(
             "Accept" => " text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -447,6 +447,27 @@ function iitboyDice_log_edit($logid, $author)
 }
 
 /**
+ * @param int $logid
+ * @return array
+ */
+function iitboyDice_getTagIdsFromBlogId($logid = 0)
+{
+    $db = Database::getInstance();
+    $Tag_Model = new Tag_Model();
+    if (strpos(Option::EMLOG_VERSION, 'pro') === false) {
+        $tagids = [];
+        $condition = $logid ? "WHERE gid = '$logid' OR gid LIKE '%,$logid,%' OR gid LIKE '%,$logid'" : '';
+        $query = $db->query("select tagname,tid from " . DB_PREFIX . "tag $condition");
+        while ($row = $db->fetch_array($query)) {
+            $tagids[] = intval($row['tid']);
+        }
+    } else {
+        $tagids = $Tag_Model->getTagIdsFromBlogId($logid);
+    }
+    return $tagids;
+}
+
+/**
  * 文章标签
  * @param $logid
  * @return string
@@ -456,7 +477,7 @@ function iitboyDice_log_tags($logid)
     $tag = '';
     $Tag_Model = new Tag_Model();
     //根据文章id获取标签id
-    $tagids = $Tag_Model->getTagIdsFromBlogId($logid);
+    $tagids = iitboyDice_getTagIdsFromBlogId($logid);
     foreach ($tagids as $value) {
         $tag_res = $Tag_Model->getOneTag($value);
         $tag .= '<a rel="tag" href="' . Url::tag($tag_res['tagname']) . '" title=' . $tag_res['tagname'] . '>' . $tag_res['tagname'] . '</a>';
@@ -482,7 +503,7 @@ function iitboyDice_related_logs($logData)
     if ($related_log_type == 'tag') {
         $Tag_Model = new Tag_Model();
         //根据文章id获取标签id
-        $tagids = $Tag_Model->getTagIdsFromBlogId($logid);
+        $tagids = iitboyDice_getTagIdsFromBlogId($logid);
         $related_log_id_str = [];
         foreach ($tagids as $tag) {
             $logids = $Tag_Model->getBlogIdsFromTagId($tag);
