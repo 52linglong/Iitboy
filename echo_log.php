@@ -32,11 +32,11 @@ if (!defined('EMLOG_ROOT')) {
             <div id="banquan">
                 <?php if (_g('log_qrcode') == 'open'): ?>
                     <div id="log-qrcode" class="tupian hint--right hint--rounded" title="这篇文章太棒了，我要分享给我的小伙伴们！&#10;&#10; 1、用手机扫二维码。&#10;&#10; 2、点右上角就可以分享到朋友圈啦。">
-                        <?php if (_g('qrcode') == 'close'): ?>
+                        <?php if (_g('js_qrcode') == 'close'): ?>
                             <img src="<?php echo (empty(_g('log_qrcode_api')) ? 'https://api.isoyu.com/qr/?m=2&e=L&p=3&url=' : _g('log_qrcode_api')) . Url::log($logid); ?>" alt="二维码加载中...">
                         <?php endif; ?>
                     </div>
-                <?php if (_g('qrcode') == 'open'): ?>
+                <?php if (_g('js_qrcode') == 'open'): ?>
                     <script>$('#log-qrcode').qrcode({text: window.location.href, size: 100, quiet: 2,});</script>
                 <?php endif; ?>
                 <?php endif; ?>

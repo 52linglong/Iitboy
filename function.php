@@ -240,16 +240,16 @@ function iitboyDice_assets($type = '')
     if (!empty($ary[_g('cdn')])) {
         if ($type == 'css') {
             foreach ($ary[_g('cdn')]['cdn']['css'] as $css) {
-                if (strpos($css, 'csshake') !== false && _g('csshake') == 'close') continue;
-                if (strpos($css, 'hint') !== false && _g('hint') == 'close') continue;
+                if (strpos($css, 'csshake') !== false && _g('css_csshake') == 'close') continue;
+                if (strpos($css, 'hint') !== false && _g('css_hint') == 'close') continue;
                 $res .= '<link rel="stylesheet" href="' . $css . '" crossorigin="anonymous" referrerpolicy="no-referrer">' . PHP_EOL . '    ';
             }
         }
         if ($type == 'js') {
             foreach ($ary[_g('cdn')]['cdn']['js'] as $js) {
-                if (strpos($js, 'lazyload') !== false && _g('lazyload') == 'close') continue;
-                if (strpos($js, 'chaffle') !== false && _g('chaffle') == 'close') continue;
-                if (strpos($js, 'qrcode') !== false && (_g('qrcode') == 'close' || _g('log_qrcode') == 'close')) continue;
+                if (strpos($js, 'lazyload') !== false && _g('js_lazyload') == 'close') continue;
+                if (strpos($js, 'chaffle') !== false && _g('js_chaffle') == 'close') continue;
+                if (strpos($js, 'qrcode') !== false && (_g('js_qrcode') == 'close' || _g('log_qrcode') == 'close')) continue;
                 $res .= '<script src="' . $js . '" crossorigin="anonymous" referrerpolicy="no-referrer"></script>' . PHP_EOL . '    ';
             }
         }
@@ -270,11 +270,11 @@ function iitboyDice_widget_blogger_div()
     if (_g('blogger') == 'open' && !empty(_g('blogger_icon'))) {
         $res .= '<div id="blogger-icon"><h3><span></span></h3>';
         $res .= (!empty(_g('qq')) && in_array('qq', _g('blogger_icon'))) ? '<a href="http://wpa.qq.com/msgrd?v=3&uin=' . _g('qq') . '&site=qq&menu=yes" target="_blank" class="hint--left  hint--rounded" title="在线联系站长QQ"><img src="' . TEMPLATE_URL . 'images/qq.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/qq2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/qq.png\'"></a>' : '';
-        $res .= (!empty(_g('wechat_img')) && in_array('wechat', _g('blogger_icon'))) ? '<a class="hint--bottom  hint--rounded" title="扫一扫加站长微信。"><img src="' . TEMPLATE_URL . 'images/weixin.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/weixin2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/weixin.png\'" class="icon-img"><span style="background-image:url(' . _g('wechat_img') . ');"></span></a>' : '';
+        $res .= (!empty(_g('wechat_img')) && in_array('wechat', _g('blogger_icon'))) ? '<a class="hint--bottom  hint--rounded" title="扫一扫加站长微信"><img src="' . TEMPLATE_URL . 'images/weixin.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/weixin2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/weixin.png\'" class="icon-img"><span style="background-image:url(' . _g('wechat_img') . ');"></span></a>' : '';
         $res .= ((!empty(_g('email')) || !empty($user_cache[1]['mail'])) && in_array('email', _g('blogger_icon'))) ? '<a href="mailto:' . (empty(_g('email')) ? $user_cache[1]['mail'] : _g('email')) . '" target="_blank" class="hint--top  hint--rounded" title="在线给站长写信。"><img src="' . TEMPLATE_URL . 'images/mail.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/mail2.png\'" onmouseout="this . src = \'' . TEMPLATE_URL . 'images/mail.png\'" alt=""></a>' : '';
         $res .= (!empty(_g('about')) && in_array('about', _g('blogger_icon'))) ? '<a href="' . _g('about') . '" target="_blank" class="hint--top  hint--rounded" title="站长介绍"><img src="' . TEMPLATE_URL . 'images/ren.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/ren2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/ren.png\'"></a>' : '';
         $res .= (!empty(_g('guestbook')) && in_array('guestbook', _g('blogger_icon'))) ? '<a href="' . _g('guestbook') . '" class="hint--top  hint--rounded" title="给本站留言"><img src="' . TEMPLATE_URL . 'images/liuyan.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/liuyan2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/liuyan.png\'"></a>' : '';
-        $res .= (!empty(_g('donate')) && in_array('donate', _g('blogger_icon'))) ? '<a href="' . _g('donate') . '" class="hint--top-left  hint--rounded" title="喜欢本站就捐赠支持吧！"><img src="' . TEMPLATE_URL . 'images/juan.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/juan2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/juan.png\'" class="icon-img"><span style="background-image:url(' . _g('donate_img') . ');"></span></a>' : '';
+        $res .= (!empty(_g('donate')) && in_array('donate', _g('blogger_icon'))) ? '<a href="' . _g('donate') . '" class="hint--bottom  hint--rounded" title="喜欢本站就捐赠支持吧！"><img src="' . TEMPLATE_URL . 'images/juan.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/juan2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/juan.png\'" class="icon-img"><span style="background-image:url(' . _g('donate_img') . ');"></span></a>' : '';
         $res .= (!empty(_g('rss')) && in_array('rss', _g('blogger_icon'))) ? '<a href="' . _g('rss') . '" target="_blank" class="hint--top  hint--rounded" title="RSS订阅本站文章"><img src="' . TEMPLATE_URL . 'images/rss.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/rss2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/rss.png\'"></a>' : '';
         $res .= '</div>';
     }
@@ -571,7 +571,13 @@ function iitboyDice_related_logs($logData)
 function iitboyDice_getGravatar($email, $lazyload = true)
 {
     $email = strtolower(trim($email));
-    $src = empty($email) ? iitboyDice_getMultiavatar($email) : (preg_match("/^[1-9]\d{4,10}@qq\.com/i", $email) ? 'https://q1.qlogo.cn/g?b=qq&nk=' . str_ireplace('@qq.com', '', $email) . '&s=100' : getGravatar($email));
+    if (empty($email)) {
+        $src = iitboyDice_getMultiavatar($email);
+    } else if (preg_match("/^[1-9]\d{4,10}@qq\.com/i", $email)) {
+        $src = iitboyDice_getAvatarCache('https://q1.qlogo.cn/g?b=qq&nk=' . str_ireplace('@qq.com', '', $email) . '&s=100', 'qq');
+    } else {
+        $src = iitboyDice_getAvatarCache(getGravatar($email), 'gr');
+    }
     return (_g('lazyload') == 'open' && $lazyload) ? '<img src="' . _g('avatar') . '" data-original="' . $src . '" class="lazyload">' : '<img src="' . $src . '">';
 }
 
@@ -595,4 +601,42 @@ function iitboyDice_createHash($str)
 {
     preg_match_all("/\d+/", md5($str), $arr);
     return abs(array_sum($arr[0]));
+}
+
+function iitboyDice_getAvatarCache($url, $type)
+{
+    if (_g('avatar_cache') == 'open') {
+        iitboyDice_cache_dir('avatar/qq');
+        iitboyDice_cache_dir('avatar/gr');
+        $jm = md5(sha1($type . AUTH_KEY . $url));
+        switch ($type) {
+            case 'qq':
+                $qq_file = EMLOG_ROOT . '/content/cache/avatar/qq/' . $jm;
+                $qq_file_url = BLOG_URL . '/content/cache/avatar/qq/' . $jm;
+                return (is_file($qq_file) && (time() - filectime($qq_file) < _g('avatar_cache_time'))) ? $qq_file_url : (iitboyDice_setAvatarCache($url, $qq_file) ? $qq_file_url : $url);
+                break;
+            case 'gr':
+                $gr_file = EMLOG_ROOT . '/content/cache/avatar/gr/' . $jm;
+                $gr_file_url = BLOG_URL . '/content/cache/avatar/gr/' . $jm;
+                return (is_file($gr_file) && (time() - filectime($gr_file) < _g('avatar_cache_time'))) ? $gr_file_url : (iitboyDice_setAvatarCache($url, $gr_file) ? $gr_file_url : $url);
+                break;
+            default:
+                return iitboyDice_getMultiavatar($url);
+                break;
+        }
+    } else {
+        return $url;
+    }
+}
+
+
+function iitboyDice_setAvatarCache($url, $file)
+{
+    return file_put_contents($file, file_get_contents($url));
+}
+
+function iitboyDice_cache_dir($dir)
+{
+    $cache_path = EMLOG_ROOT . '/content/cache/' . $dir;
+    if (!is_dir($cache_path)) mkdir($cache_path, 0777, true);
 }

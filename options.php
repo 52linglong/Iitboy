@@ -33,7 +33,7 @@ $options = array(
         'default' => 'bootcdn',
         'description' => '稳定、快速、免费的前端开源项目 CDN 加速服务，关闭则使用本地资源'
     ),
-    'csshake' => array(
+    'css_csshake' => array(
         'labels' => 'tpl-basic',
         'type' => 'radio',
         'name' => 'CSS 元素抖动动画',
@@ -44,7 +44,7 @@ $options = array(
         'default' => 'open',
         'description' => '使DOM元素抖动起来，就是为了好玩，可以关闭'
     ),
-    'hint' => array(
+    'css_hint' => array(
         'labels' => 'tpl-basic',
         'type' => 'radio',
         'name' => 'CSS tooltips提示样式',
@@ -55,7 +55,7 @@ $options = array(
         'default' => 'open',
         'description' => '快速实现tooltips提示样式，就是为了美化，可以关闭'
     ),
-    'lazyload' => array(
+    'js_lazyload' => array(
         'labels' => 'tpl-basic',
         'type' => 'radio',
         'name' => 'JS 图片延迟加载',
@@ -66,7 +66,7 @@ $options = array(
         'default' => 'open',
         'description' => '支持列表文章缩略图、文章正文图片、游客头像，可以关闭'
     ),
-    'chaffle' => array(
+    'js_chaffle' => array(
         'labels' => 'tpl-basic',
         'type' => 'radio',
         'name' => 'JS 随机字符',
@@ -77,7 +77,7 @@ $options = array(
         'default' => 'open',
         'description' => '允许你洗牌随机字符，可以关闭（仅适用jsDelivr、本地资源）'
     ),
-    'qrcode' => array(
+    'js_qrcode' => array(
         'labels' => 'tpl-basic',
         'type' => 'radio',
         'name' => 'JS 二维码',
@@ -87,6 +87,49 @@ $options = array(
         ),
         'default' => 'open',
         'description' => '动态生成二维码，可以关闭'
+    ),
+    'bg' => array(
+        'labels' => 'tpl-basic',
+        'type' => 'radio',
+        'name' => '背景颜色',
+        'values' => array(
+            'open' => '开启',
+            'close' => '关闭',
+        ),
+        'default' => 'open',
+        'description' => ''
+    ),
+    'bg_color' => array(
+        'labels' => 'tpl-basic',
+        'type' => 'text',
+        'name' => '背景颜色',
+        'default' => 'rgba(194, 240, 194, 0.99)',
+        'description' => '',
+    ),
+    'bgi' => array(
+        'labels' => 'tpl-basic',
+        'type' => 'radio',
+        'name' => '背景图片',
+        'values' => array(
+            'open' => '开启',
+            'close' => '关闭',
+        ),
+        'default' => 'open',
+        'description' => '优先显示背景图片'
+    ),
+    'bg_img' => array(
+        'labels' => 'tpl-basic',
+        'type' => 'image',
+        'name' => '背景图片',
+        'default' => TEMPLATE_URL . 'images/bj.jpg',
+        'description' => '若不能上传请改用ftp手动上传。'
+    ),
+    'mbg_img' => array(
+        'labels' => 'tpl-basic',
+        'type' => 'image',
+        'name' => '背景图片-移动端',
+        'default' => TEMPLATE_URL . 'images/bj_m.jpg',
+        'description' => '若不能上传请改用ftp手动上传。'
     ),
     'logo' => array(
         'labels' => 'tpl-basic',
@@ -98,7 +141,7 @@ $options = array(
         ),
         'default' => 'open',
     ),
-    'logoimg' => array(
+    'logo_img' => array(
         'labels' => 'tpl-basic',
         'type' => 'image',
         'name' => 'logo',
@@ -196,7 +239,7 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'open',
-        'description' => '二维码启用规则，文章页二维码 > JS 二维码 > 文章页二维码 API'
+        'description' => '二维码启用规则，JS 二维码 > 文章页二维码 API'
     ),
     'log_qrcode_api' => array(
         'labels' => 'tpl-log',
@@ -373,6 +416,24 @@ $options = array(
         'multi' => true,
         'default' => '<a href="/" title="图片广告招租，30元1月。" target="_blank" rel="nofollow" style="width:100%;background: rgba(0,0,0,0.6);color: white;padding: 1rem 0;">文章广告招租，请联系站长</a>',
         'description' => ''
+    ),
+    'avatar_cache' => array(
+        'labels' => 'tpl-other',
+        'type' => 'radio',
+        'name' => '头像缓存',
+        'values' => array(
+            'open' => '开启',
+            'close' => '关闭',
+        ),
+        'default' => 'close',
+        'description' => '开启头像缓存会加密邮箱/QQ，防止对用户的骚扰'
+    ),
+    'avatar_cache_time' => array(
+        'labels' => 'tpl-other',
+        'type' => 'text',
+        'name' => '头像缓存过期时间（s/秒）',
+        'default' => '2592000',
+        'description' => '86400/天，604800/周，2592000/月(30)，31536000/年'
     ),
 );
 

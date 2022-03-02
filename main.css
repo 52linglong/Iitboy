@@ -4,8 +4,34 @@ body {
     margin: 0;
     font: small 'Microsoft Yahei';
     font-family: "Microsoft YaHei", "微软雅黑", "Trebuchet MS", Arial, Verdana, Tahoma, sans-serif;
-    background: rgba(194, 240, 194, 0.99) url("./images/iitboy.cn.bj01.jpg") no-repeat fixed;
+    /*background: rgba(194, 240, 194, 0.99) url("./images/bj.jpg") no-repeat fixed;*/
     background-size: cover;
+}
+
+
+.bg-image {
+    position: fixed;
+    top: 0;
+    bottom: -30%;
+    left: 0;
+    z-index: -9999;
+    width: 100%;
+    height: auto;
+    min-width: 1024px;
+    min-height: 100%;
+}
+
+.mbg-image {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: -30%;
+    left: 0;
+    z-index: -9999;
+    width: 100%;
+    height: auto;
+    min-width: 1024px;
+    min-height: 100%;
 }
 
 #top_banner {
@@ -571,11 +597,19 @@ a:active {
 @media screen and (max-width: 800px) {
     body {
         padding: 0;
-        background: rgba(194, 240, 194, 0.99) url("./images/sjbj.jpg") no-repeat fixed;
+        /*background: rgba(194, 240, 194, 0.99) url("./images/bj_m.jpg") no-repeat fixed;*/
         color: #323232;
         margin: 0;
         font: small 'Microsoft Yahei';
         background-size: cover;
+    }
+
+    .bg-image {
+        display: none;
+    }
+
+    .mbg-image {
+        display: block;
     }
 
     #top_banner {

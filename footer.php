@@ -62,6 +62,10 @@ if (!defined('EMLOG_ROOT')) {
         <?php endif; ?>
     </div>
 </div>
+<?php if (_g('bgi') == 'open'): ?>
+    <img class="bg-image" src="<?php echo _g('bg_img'); ?>" alt="">
+    <img class="mbg-image" src="<?php echo _g('mbg_img'); ?>" alt="">
+<?php endif; ?>
 <div class="loading">
     <div class="loading2">
         <div class="block"></div>
