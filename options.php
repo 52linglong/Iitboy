@@ -435,5 +435,53 @@ $options = array(
         'default' => '2592000',
         'description' => '86400/天，604800/周，2592000/月(30)，31536000/年'
     ),
+    'login' => array(
+        'labels' => 'tpl-other',
+        'type' => 'text',
+        'name' => '用户登录',
+        'default' => '',
+        'description' => '用户登录地址'
+    ),
+    'foot_a' => array(
+        'labels' => 'tpl-other',
+        'type' => 'text',
+        'name' => '底部信息',
+        'multi' => true,
+        'default' => '',
+        'description' => '底部信息，请使用 a 标签'
+    ),
+    'foot_dice' => array(
+        'labels' => 'tpl-other',
+        'type' => 'radio',
+        'name' => '版权/主题/程序',
+        'values' => array(
+            'open' => '开启',
+            'close' => '关闭',
+        ),
+        'default' => 'open',
+        'description' => '是否开启底部的版权、主题、程序的信息显示'
+    ),
+    'html_annotation' => array(
+        'labels' => 'tpl-other',
+        'type' => 'radio',
+        'name' => '删除 HTML 注释',
+        'values' => array(
+            'open' => '开启',
+            'close' => '关闭',
+        ),
+        'default' => 'open',
+        'description' => ''
+    ),
+    'html_linefeeds_whitespace' => array(
+        'labels' => 'tpl-other',
+        'type' => 'radio',
+        'name' => '删除 HTML 中多余的换行和空格',
+        'values' => array(
+            'open' => '开启',
+            'close' => '关闭',
+        ),
+        'default' => 'close',
+        'description' => ''
+    ),
 );
 

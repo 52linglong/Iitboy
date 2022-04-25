@@ -9,7 +9,7 @@
 
 function iitboyDice_getHeaderData()
 {
-    if (!file_exists(dirname(__FILE__) . '/header.php')) {
+    if (!is_file(dirname(__FILE__) . '/header.php')) {
         return false;
     }
     $tplData = implode('', @file(dirname(__FILE__) . '/header.php'));
@@ -239,14 +239,16 @@ function iitboyDice_assets($type = '')
     $res = '';
     if (!empty($ary[_g('cdn')])) {
         if ($type == 'css') {
-            foreach ($ary[_g('cdn')]['cdn']['css'] as $css) {
+            $cdncss = $ary[_g('cdn')]['cdn']['css'];
+            foreach ($cdncss as $css) {
                 if (strpos($css, 'csshake') !== false && _g('css_csshake') == 'close') continue;
                 if (strpos($css, 'hint') !== false && _g('css_hint') == 'close') continue;
                 $res .= '<link rel="stylesheet" href="' . $css . '" crossorigin="anonymous" referrerpolicy="no-referrer">' . PHP_EOL . '    ';
             }
         }
         if ($type == 'js') {
-            foreach ($ary[_g('cdn')]['cdn']['js'] as $js) {
+            $cdnjs = $ary[_g('cdn')]['cdn']['js'];
+            foreach ($cdnjs as $js) {
                 if (strpos($js, 'lazyload') !== false && _g('js_lazyload') == 'close') continue;
                 if (strpos($js, 'chaffle') !== false && _g('js_chaffle') == 'close') continue;
                 if (strpos($js, 'qrcode') !== false && (_g('js_qrcode') == 'close' || _g('log_qrcode') == 'close')) continue;
@@ -286,10 +288,9 @@ function iitboyDice_twitter()
     if (empty(_g('twitter_div'))) {
         $db = Database::getInstance();
         $list = $db->query("SELECT id,content,img,author,date,replynum FROM " . DB_PREFIX . "twitter ORDER BY `date` DESC LIMIT 1");
-        while ($row = $db->fetch_array($list)) {
-            $t = strpos(Option::EMLOG_VERSION, 'pro') === false ? 'href="/t"' : '';
-            $res = empty($row['content']) ?: '<a ' . $t . '>' . $row['content'] . '</a>';
-        }
+        $row = $db->fetch_array($list);
+        $t = strpos(Option::EMLOG_VERSION, 'pro') === false ? 'href="/t"' : '';
+        $res = empty($row['content']) ? '' : '<a ' . $t . '>' . $row['content'] . '</a>';
     } else {
         $res = _g('twitter_div');
     }
@@ -338,7 +339,8 @@ function iitboyDice_log_img_content($content)
  */
 function iitboyDice_log_img_random($logid)
 {
-    return file_exists(TEMPLATE_PATH . 'images/rand/' . ($logid % 20) . '.jpg') ? TEMPLATE_URL . 'images/rand/' . ($logid % 20) . '.jpg' : _g('log_img_default');
+    $name = $logid % 20;
+    return is_file(TEMPLATE_PATH . 'images/rand/' . $name . '.jpg') ? TEMPLATE_URL . 'images/rand/' . $name . '.jpg' : _g('log_img_default');
 }
 
 function iitboyDice_log_description($log_description)
@@ -589,7 +591,8 @@ function iitboyDice_getGravatar($email, $lazyload = true)
  */
 function iitboyDice_getMultiavatar($email)
 {
-    return file_exists(TEMPLATE_PATH . 'images/avatar/' . (iitboyDice_createHash($email) % 20) . '.jpg') ? TEMPLATE_URL . 'images/avatar/' . (iitboyDice_createHash($email) % 20) . '.jpg' : _g('avatar');
+    $name = iitboyDice_createHash($email) % 20;
+    return is_file(TEMPLATE_PATH . 'images/avatar/' . $name . '.jpg') ? TEMPLATE_URL . 'images/avatar/' . $name . '.jpg' : _g('avatar');
 }
 
 /**
@@ -613,12 +616,12 @@ function iitboyDice_getAvatarCache($url, $type)
             case 'qq':
                 $qq_file = EMLOG_ROOT . '/content/cache/avatar/qq/' . $jm;
                 $qq_file_url = BLOG_URL . '/content/cache/avatar/qq/' . $jm;
-                return (is_file($qq_file) && (time() - filectime($qq_file) < _g('avatar_cache_time'))) ? $qq_file_url : (iitboyDice_setAvatarCache($url, $qq_file) ? $qq_file_url : $url);
+                return (is_file($qq_file) && (time() - filemtime($qq_file) < _g('avatar_cache_time'))) ? $qq_file_url : (iitboyDice_setAvatarCache($url, $qq_file) ? $qq_file_url : $url);
                 break;
             case 'gr':
                 $gr_file = EMLOG_ROOT . '/content/cache/avatar/gr/' . $jm;
                 $gr_file_url = BLOG_URL . '/content/cache/avatar/gr/' . $jm;
-                return (is_file($gr_file) && (time() - filectime($gr_file) < _g('avatar_cache_time'))) ? $gr_file_url : (iitboyDice_setAvatarCache($url, $gr_file) ? $gr_file_url : $url);
+                return (is_file($gr_file) && (time() - filemtime($gr_file) < _g('avatar_cache_time'))) ? $gr_file_url : (iitboyDice_setAvatarCache($url, $gr_file) ? $gr_file_url : $url);
                 break;
             default:
                 return iitboyDice_getMultiavatar($url);
@@ -629,14 +632,61 @@ function iitboyDice_getAvatarCache($url, $type)
     }
 }
 
-
 function iitboyDice_setAvatarCache($url, $file)
 {
-    return file_put_contents($file, file_get_contents($url));
+    $data = iitboyDice_curl($url);
+    if ($data['code'] == 400) return false;
+    return file_put_contents($file, $data['data']);
 }
 
 function iitboyDice_cache_dir($dir)
 {
     $cache_path = EMLOG_ROOT . '/content/cache/' . $dir;
     if (!is_dir($cache_path)) mkdir($cache_path, 0777, true);
+}
+
+
+function iitboyDice_speeder_replace($replace, $htmlContent, $isStrReplace = false)
+{
+    if ($isStrReplace === true) {
+        foreach ($replace as $key => $value) {
+            $htmlContent = str_replace($key, $value, $htmlContent);
+        }
+        return $htmlContent;
+    }
+    return preg_replace(array_keys($replace), array_values($replace), $htmlContent);
+}
+
+/**
+ * 删除 HTML 注释
+ * @param $htmlContent
+ * @return string|string[]|null
+ */
+function iitboyDice_html_annotation($htmlContent)
+{
+    $replace = array(
+        '/<!--[^]><!\[](.*?)[^\]]-->/s' => '',
+    );
+    return iitboyDice_speeder_replace($replace, $htmlContent);
+}
+
+/**
+ * 删除 HTML 中多余的换行和空格
+ * @param $htmlContent
+ * @return string|string[]|null
+ */
+function iitboyDice_html_linefeeds_whitespace($htmlContent)
+{
+    $replace = array(
+        "/\n([\S])/" => '$1',
+        "/\r/" => '',
+        "/\n/" => '',
+        "/\t/" => '',
+        "/ +/" => ' ',
+        "/> +</" => '><',
+    );
+    if (preg_match_all('/(crayon-|<\/pre>)/i', $htmlContent, $matches)) {
+        return $htmlContent;
+    }
+    return iitboyDice_speeder_replace($replace, $htmlContent);
 }

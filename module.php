@@ -3,6 +3,10 @@
  * 侧边栏组件、页面模块
  */
 !defined('EMLOG_ROOT') && exit('access deined!');
+
+if (!function_exists('_g')) {
+    emMsg('请先安装 <a href="https://www.emlog.net/plugin/detail/377" target="_blank">模板设置插件</a>', BLOG_URL . 'admin/store.php?action=plu');
+}
 ?>
 <?php
 //widget：blogger 分类
@@ -211,7 +215,7 @@ function widget_random_log($title)
 function widget_search($title)
 { ?>
     <div id="sousuo">
-<!--        <h3><span>--><?php //echo $title; ?><!--</span></h3>-->
+        <!--<h3><span>--><?php //echo $title; ?><!--</span></h3>-->
         <ul id="logsearch">
             <form name="keyform" method="get" action="<?php echo BLOG_URL; ?>index.php">
                 <input name="keyword" class="search" type="text" onblur="if(this.value==''){this.value='请输入搜索关键字';}" onfocus="this.value='';" value="请输入搜索关键字" title="丘比龙小提示：如果你要搜索内容，请在搜索框中输入关键词，然后按“回车”即可查询到结果。">
@@ -232,8 +236,7 @@ function widget_archive($title)
         <div id="cundang_biankuang">
             <ul id="record">
                 <?php foreach ($record_cache as $value): ?>
-                    <li><a href="<?php echo Url::record($value['date']); ?>"><?php echo $value['record']; ?>
-                            (<?php echo $value['lognum']; ?>)</a></li>
+                    <li><a href="<?php echo Url::record($value['date']); ?>"><?php echo $value['record']; ?>(<?php echo $value['lognum']; ?>)</a></li>
                 <?php endforeach; ?>
             </ul>
             <div id="gaodu1"></div>
@@ -329,7 +332,6 @@ function blog_navi()
         <?php endforeach; ?>
     </ul>
 <?php } ?>
-
 <?php
 //blog：880以下的竖导航
 function blog_navi2()
@@ -374,7 +376,6 @@ function topflg($top, $sortop = 'n', $sortid = null)
 }
 
 ?>
-
 <?php
 //blog：编辑
 function editflg($logid, $author)
@@ -599,7 +600,7 @@ function blog_comments_post($logid, $ckname, $ckmail, $ckurl, $verifyCode, $allo
                             <label for="url"><small>个人主页 (选填)</small></label>
                         </p>
                     <?php endif; ?>
-                    <p><textarea name="comment" id="comment" rows="12" tabindex="4"></textarea></p>
+                    <p><textarea name="comment" id="comment" rows="12" tabindex="4" required></textarea></p>
                     <div class="fbpl"><?php echo $verifyCode; ?>
                         <input type="submit" id="comment_submit" value="发表评论" tabindex="6"><span id="top2"><a href="javascript:void(0);" onclick="goTop();" class="hint--left hint--bounce" data-hint="返回顶部"><img src="<?php echo TEMPLATE_URL; ?>images/top2.png"></a></span>
                         <div id="gaodu1"></div>
@@ -681,8 +682,6 @@ function index_t($num)
         </div>
     <?php } ?>
 <?php } ?>
-
-
 <?php
 function iitboy_zwimg($str)
 {
@@ -695,7 +694,6 @@ function iitboy_zwimg($str)
 }
 
 ?>
-
 <?php
 function iitboy_weiyu($str)
 {
@@ -708,7 +706,6 @@ function iitboy_weiyu($str)
 }
 
 ?>
-
 <?php
 function baidu($url)
 {
@@ -753,7 +750,6 @@ function checkbaidu($id)
 }
 
 ?>
-
 <?php
 /*
  * 新增函数
