@@ -1,8 +1,8 @@
 <?php
 /*
 Template Name:Dice寒光唯美式
-Version:v220302
-Description:一款二次元唯美响应式模版，采用 HTML5 + CSS3 响应式、智能化设计。在手机、平板、PC 上都能完美显示。<br><br><span style="color:#00a71e;">√为阅读而设计，为写作而存在！</span> &nbsp;&nbsp; ★更新时间：<span style="color:#00A04B;">2022年03月02日</span><br><br><a href="http://www.dxoca.cn/" target="_blank">寒光站点</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/" target="_blank">Dice’s Blog</a> &nbsp;&nbsp;  <a href="https://blog.52linglong.com/theme/iitboyDice.html" target="_blank">使用说明</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/about.html" target="_blank">关于我</a> &nbsp;&nbsp;  <a href="https://github.com/52linglong/Iitboy" target="_blank">Github</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/donate.html" target="_blank" style="color: red;font-weight: bold;border: 1px solid;padding: 2px 5px;border-radius: 3px;">赞助支持</a><br><br>
+Version:v220425
+Description:一款二次元唯美响应式模版，采用 HTML5 + CSS3 响应式、智能化设计。在手机、平板、PC 上都能完美显示。<br><br><span style="color:#00a71e;">√为阅读而设计，为写作而存在！</span> &nbsp;&nbsp; ★更新时间：<span style="color:#00A04B;">2022年04月25日</span><br><br><a href="http://www.dxoca.cn/" target="_blank">寒光站点</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/" target="_blank">Dice’s Blog</a> &nbsp;&nbsp;  <a href="https://blog.52linglong.com/theme/iitboyDice.html" target="_blank">使用说明</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/about.html" target="_blank">关于我</a> &nbsp;&nbsp;  <a href="https://github.com/52linglong/Iitboy" target="_blank">Github</a> &nbsp;&nbsp;  <a href="http://blog.52linglong.com/donate.html" target="_blank" style="color: red;font-weight: bold;border: 1px solid;padding: 2px 5px;border-radius: 3px;">赞助支持</a><br><br>
 Author:寒光&Dice
 Author Url:http://blog.52linglong.com/
 Sidebar Amount:1
