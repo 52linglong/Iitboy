@@ -215,7 +215,7 @@ function widget_random_log($title)
 function widget_search($title)
 { ?>
     <div id="sousuo">
-        <!--<h3><span>--><?php //echo $title; ?><!--</span></h3>-->
+        <!--<h3><span><?php /*echo $title; */ ?></span></h3>-->
         <ul id="logsearch">
             <form name="keyform" method="get" action="<?php echo BLOG_URL; ?>index.php">
                 <input name="keyword" class="search" type="text" onblur="if(this.value==''){this.value='请输入搜索关键字';}" onfocus="this.value='';" value="请输入搜索关键字" title="丘比龙小提示：如果你要搜索内容，请在搜索框中输入关键词，然后按“回车”即可查询到结果。">
@@ -236,7 +236,8 @@ function widget_archive($title)
         <div id="cundang_biankuang">
             <ul id="record">
                 <?php foreach ($record_cache as $value): ?>
-                    <li><a href="<?php echo Url::record($value['date']); ?>"><?php echo $value['record']; ?>(<?php echo $value['lognum']; ?>)</a></li>
+                    <li><a href="<?php echo Url::record($value['date']); ?>"><?php echo $value['record']; ?>
+                            (<?php echo $value['lognum']; ?>)</a></li>
                 <?php endforeach; ?>
             </ul>
             <div id="gaodu1"></div>
@@ -245,18 +246,25 @@ function widget_archive($title)
 <?php } ?>
 <?php
 //widget：自定义组件
-function widget_custom_text($title, $content)
+function widget_custom_text($title, $content, $widget = '')
 {
     if ($title == '随机文章') {
         widget_random_log($title);
         return false;
     }
+    $widgetId = str_replace('custom_wg_', '', $widget);
+    $widgetNum = is_numeric($widgetId) ?: iitboyDice_alpha2num($widgetId);
+    $bg = $widgetNum ? '--bg-color-' . $widgetNum % 6 : '--bg-color';
     ?>
-    <div id="zidingyi">
-        <h3><span><?php echo $title; ?></span></h3>
-        <ul>
-            <?php echo $content; ?>
-        </ul>
+    <div class="zidingyi" id="<?= $widget; ?>">
+        <h3 style="background-color: var(<?= $bg ?>);"><span><?= $title; ?></span></h3>
+        <div class="biankuang">
+            <div class="wenzhang">
+                <ul>
+                    <?= $content; ?>
+                </ul>
+            </div>
+        </div>
     </div>
 <?php } ?>
 <?php

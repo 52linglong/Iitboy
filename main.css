@@ -1,3 +1,13 @@
+:root {
+    --bg-color: rgba(50, 50, 50, 0.72);
+    --bg-color-0: rgba(109, 101, 207, 0.72);
+    --bg-color-1: rgba(108, 200, 81, 0.72);
+    --bg-color-2: rgba(202, 74, 74, 0.72);
+    --bg-color-3: rgba(207, 145, 101, 0.72);
+    --bg-color-4: rgba(50, 162, 172, 0.72);
+    --bg-color-5: rgba(207, 101, 148, 0.72);
+}
+
 body {
     padding: 0;
     color: #323232;
@@ -7,7 +17,6 @@ body {
     /*background: rgba(194, 240, 194, 0.99) url("./images/bj.jpg") no-repeat fixed;*/
     background-size: cover;
 }
-
 
 .bg-image {
     position: fixed;
@@ -19,6 +28,7 @@ body {
     height: auto;
     min-width: 1024px;
     min-height: 100%;
+    pointer-events: none;
 }
 
 .mbg-image {
@@ -32,6 +42,7 @@ body {
     height: auto;
     min-width: 1024px;
     min-height: 100%;
+    pointer-events: none;
 }
 
 #top_banner {
@@ -67,6 +78,7 @@ body {
 
 img {
     border: none;
+    user-select: none;
 }
 
 a {
@@ -734,8 +746,7 @@ a:active {
     }
 }
 
-/* 6
-*/
+/* 650px */
 @media screen and (max-width: 650px) {
     #contentleftt .date {
         display: none;
@@ -1240,6 +1251,7 @@ img {
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     display: inline;
+    padding: 0 0.5rem;
 }
 
 .daohang2 a:link {
@@ -1348,11 +1360,11 @@ img {
     position: relative;
     z-index: 5;
     clear: both;
-    padding: 0;
-    height: 50px;
+    padding: 1.5rem 0 0 0;
+    /*height: 50px;*/
     text-align: center;
     font-size: 16px;
-    line-height: 70px
+    /*line-height: 70px*/
 }
 
 #pagemenui a:hover {
@@ -1377,7 +1389,13 @@ img {
     border-radius: 50%;
     background: #494949;
     color: #FFF;
-    line-height: 32px
+    line-height: 32px;
+    font-size: initial;
+    white-space: nowrap;
+}
+
+#pagemenui a[title=首页], #pagemenui a[title=尾页] {
+    font-size: inherit;
 }
 
 #content {
@@ -1396,6 +1414,10 @@ img {
 
 #content h1 {
     display: none;
+}
+
+#content #masked {
+    display: block !important;
 }
 
 #content h2 {
@@ -1512,7 +1534,7 @@ blockquote {
         -webkit-text-fill-color: transparent;
         -webkit-background-clip: text;
         -webkit-background-size: 200% 100%;
-        -webkit-animation: masked-animation 4s infinite linear
+        -webkit-animation: masked-animation 4s infinite linear;
     }
 }
 
@@ -2964,7 +2986,7 @@ a img.aligncenter {
     background-color: #459DBD;
 }
 
-#zidingyi {
+#sidebar .zidingyi {
     width: 276px;
     height: auto;
     margin: 0 auto;
@@ -2972,9 +2994,44 @@ a img.aligncenter {
     text-align: center;
 }
 
-#zidingyi h3 {
+#sidebar .zidingyi h3 {
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0;
+    width: 100%;
+    height: 45px;
+    /*background-color: var(--bg-color);*/
+}
+
+#sidebar .zidingyi h3 span {
+    height: 45px;
+    font-size: 16px;
+    font-weight: normal;
+    text-shadow: 1px 1px 3px #000;
+    color: #fff;
+    font-family: \5FAE\8F6F\96C5\9ED1, \5b8b\4f53, serif;
+    line-height: 41px;
+    letter-spacing: 3px;
+}
+
+#sidebar .zidingyi .biankuang {
+    overflow: hidden;
+    margin-top: 15px;
+    padding: 0;
+    width: 256px;
+    border: 1px solid rgba(193, 183, 169, 0.21);
+    border-radius: 6px;
     text-align: left;
-    padding: 0 0 12px 8px;
+    display: inline-block;
+}
+
+#sidebar .zidingyi .wenzhang {
+    overflow: hidden;
+    padding: 15px 0 15px 10px;
+    width: 230px;
+    font-size: 12px;
+    display: inline-block;
 }
 
 #biankuang2 {

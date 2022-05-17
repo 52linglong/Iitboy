@@ -205,10 +205,12 @@ function iitboyDice_cdn()
                     TEMPLATE_URL . '/css/animate.min.css',
                     TEMPLATE_URL . '/css/font-awesome.min.css',
                     TEMPLATE_URL . '/css/csshake.min.css',
+                    TEMPLATE_URL . '/css/hint.min.css',
                 ),
                 'js' => array(
                     TEMPLATE_URL . '/js/jquery.min.js',
                     TEMPLATE_URL . '/js/jquery.pjax.min.js',
+                    TEMPLATE_URL . '/js/jquery.lazyload.min.js',
                     TEMPLATE_URL . '/js/chaffle.min.js',
                     TEMPLATE_URL . '/js/jquery-qrcode.min.js',
                 ),
@@ -231,6 +233,7 @@ function iitboyDice_dns_prefetch()
 
 /**
  * 静态资源
+ * @param string $type
  * @return string
  */
 function iitboyDice_assets($type = '')
@@ -261,6 +264,54 @@ function iitboyDice_assets($type = '')
 }
 
 /**
+ * 将十进制数字转换为二十六进制字母串
+ * @param $intNum
+ * @param bool $isLower
+ * @return string
+ */
+function iitboyDice_num2alpha($intNum, $isLower = true)
+{
+    $num26 = base_convert($intNum, 10, 26);
+    $addcode = $isLower ? 49 : 17;
+    $result = '';
+    for ($i = 0; $i < strlen($num26); $i++) {
+        $code = ord($num26[$i]);
+        if ($code < 58) {
+            $result .= chr($code + $addcode);
+        } else {
+            $result .= chr($code + $addcode - 39);
+        }
+    }
+    return $result;
+}
+
+/**
+ * 将二十六进制字母串转换为十进制数字
+ * @param $strAlpha
+ * @return int
+ */
+function iitboyDice_alpha2num($strAlpha)
+{
+    if (ord($strAlpha[0]) > 90) {
+        $startCode = 97;
+        $reduceCode = 10;
+    } else {
+        $startCode = 65;
+        $reduceCode = -22;
+    }
+    $num26 = '';
+    for ($i = 0; $i < strlen($strAlpha); $i++) {
+        $code = ord($strAlpha[$i]);
+        if ($code < $startCode + 10) {
+            $num26 .= $code - $startCode;
+        } else {
+            $num26 .= chr($code - $reduceCode);
+        }
+    }
+    return (int)base_convert($num26, 26, 10);
+}
+
+/**
  * 边栏 - 个人资料 自定义
  * @return string
  */
@@ -271,13 +322,13 @@ function iitboyDice_widget_blogger_div()
     $res = '';
     if (_g('blogger') == 'open' && !empty(_g('blogger_icon'))) {
         $res .= '<div id="blogger-icon"><h3><span></span></h3>';
-        $res .= (!empty(_g('qq')) && in_array('qq', _g('blogger_icon'))) ? '<a href="http://wpa.qq.com/msgrd?v=3&uin=' . _g('qq') . '&site=qq&menu=yes" target="_blank" class="hint--left  hint--rounded" title="在线联系站长QQ"><img src="' . TEMPLATE_URL . 'images/qq.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/qq2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/qq.png\'"></a>' : '';
-        $res .= (!empty(_g('wechat_img')) && in_array('wechat', _g('blogger_icon'))) ? '<a class="hint--bottom  hint--rounded" title="扫一扫加站长微信"><img src="' . TEMPLATE_URL . 'images/weixin.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/weixin2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/weixin.png\'" class="icon-img"><span style="background-image:url(' . _g('wechat_img') . ');"></span></a>' : '';
+        $res .= (!empty(_g('qq')) && in_array('qq', _g('blogger_icon'))) ? '<a href="http://wpa.qq.com/msgrd?v=3&uin=' . _g('qq') . '&site=qq&menu=yes" target="_blank" class="hint--left  hint--rounded" title="在线联系站长QQ"><img src="' . TEMPLATE_URL . 'images/qq.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/qq2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/qq.png\'" alt=""></a>' : '';
+        $res .= (!empty(_g('wechat_img')) && in_array('wechat', _g('blogger_icon'))) ? '<a class="hint--bottom  hint--rounded" title="扫一扫加站长微信"><img src="' . TEMPLATE_URL . 'images/weixin.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/weixin2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/weixin.png\'" class="icon-img" alt=""><span style="background-image:url(' . _g('wechat_img') . ');"></span></a>' : '';
         $res .= ((!empty(_g('email')) || !empty($user_cache[1]['mail'])) && in_array('email', _g('blogger_icon'))) ? '<a href="mailto:' . (empty(_g('email')) ? $user_cache[1]['mail'] : _g('email')) . '" target="_blank" class="hint--top  hint--rounded" title="在线给站长写信。"><img src="' . TEMPLATE_URL . 'images/mail.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/mail2.png\'" onmouseout="this . src = \'' . TEMPLATE_URL . 'images/mail.png\'" alt=""></a>' : '';
-        $res .= (!empty(_g('about')) && in_array('about', _g('blogger_icon'))) ? '<a href="' . _g('about') . '" target="_blank" class="hint--top  hint--rounded" title="站长介绍"><img src="' . TEMPLATE_URL . 'images/ren.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/ren2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/ren.png\'"></a>' : '';
-        $res .= (!empty(_g('guestbook')) && in_array('guestbook', _g('blogger_icon'))) ? '<a href="' . _g('guestbook') . '" class="hint--top  hint--rounded" title="给本站留言"><img src="' . TEMPLATE_URL . 'images/liuyan.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/liuyan2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/liuyan.png\'"></a>' : '';
-        $res .= (!empty(_g('donate')) && in_array('donate', _g('blogger_icon'))) ? '<a href="' . _g('donate') . '" class="hint--bottom  hint--rounded" title="喜欢本站就捐赠支持吧！"><img src="' . TEMPLATE_URL . 'images/juan.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/juan2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/juan.png\'" class="icon-img"><span style="background-image:url(' . _g('donate_img') . ');"></span></a>' : '';
-        $res .= (!empty(_g('rss')) && in_array('rss', _g('blogger_icon'))) ? '<a href="' . _g('rss') . '" target="_blank" class="hint--top  hint--rounded" title="RSS订阅本站文章"><img src="' . TEMPLATE_URL . 'images/rss.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/rss2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/rss.png\'"></a>' : '';
+        $res .= (!empty(_g('about')) && in_array('about', _g('blogger_icon'))) ? '<a href="' . _g('about') . '" target="_blank" class="hint--top  hint--rounded" title="站长介绍"><img src="' . TEMPLATE_URL . 'images/ren.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/ren2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/ren.png\'" alt=""></a>' : '';
+        $res .= (!empty(_g('guestbook')) && in_array('guestbook', _g('blogger_icon'))) ? '<a href="' . _g('guestbook') . '" class="hint--top  hint--rounded" title="给本站留言"><img src="' . TEMPLATE_URL . 'images/liuyan.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/liuyan2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/liuyan.png\'" alt=""></a>' : '';
+        $res .= (!empty(_g('donate')) && in_array('donate', _g('blogger_icon'))) ? '<a href="' . _g('donate') . '" class="hint--bottom  hint--rounded" title="喜欢本站就捐赠支持吧！"><img src="' . TEMPLATE_URL . 'images/juan.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/juan2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/juan.png\'" class="icon-img" alt=""><span style="background-image:url(' . _g('donate_img') . ');"></span></a>' : '';
+        $res .= (!empty(_g('rss')) && in_array('rss', _g('blogger_icon'))) ? '<a href="' . _g('rss') . '" target="_blank" class="hint--top  hint--rounded" title="RSS订阅本站文章"><img src="' . TEMPLATE_URL . 'images/rss.png" onmouseover="this.src=\'' . TEMPLATE_URL . 'images/rss2.png\'" onmouseout="this.src=\'' . TEMPLATE_URL . 'images/rss.png\'" alt=""></a>' : '';
         $res .= '</div>';
     }
     return $res;
@@ -294,19 +345,28 @@ function iitboyDice_twitter()
     } else {
         $res = _g('twitter_div');
     }
-    return _g('twitter') == 'open' ? '<div id="gonggao"><div id="ggwz">' . $res . '</div><div id="gonggao_img"><img src="' . TEMPLATE_URL . 'images/gonggao.png"></div></div><div id="gonggao_bk"><div class="ggwz2"><img src="' . TEMPLATE_URL . 'images/gonggao_xlb.gif"><b>公告：</b>' . $res . '</div></div>' : false;
+    return _g('twitter') == 'open' ? '<div id="gonggao"><div id="ggwz">' . $res . '</div><div id="gonggao_img"><img src="' . TEMPLATE_URL . 'images/gonggao.png" alt=""></div></div><div id="gonggao_bk"><div class="ggwz2"><img src="' . TEMPLATE_URL . 'images/gonggao_xlb.gif" alt=""><b>公告：</b>' . $res . '</div></div>' : false;
 }
 
 /**
  * 文章缩略图
  * @param int $logid
+ * @param string $content
  * @return bool|mixed|string
  */
-function iitboyDice_log_img($logid = 0)
+function iitboyDice_log_img($logid = 0, $content = '')
 {
-    $db = Database::getInstance();
-    $row = $db->fetch_array($db->query("SELECT * FROM " . DB_PREFIX . "blog WHERE gid='$logid'"));
-    return $row['cover'] ? BLOG_URL . substr($row['cover'], 3, strlen($row['cover'])) : (iitboyDice_log_img_attachment($logid) ?: (iitboyDice_log_img_content($row['content']) ?: iitboyDice_log_img_random($logid)));
+    $img = '';
+    if (in_array('attachment', _g('log_img_get')) && empty($img)) {
+        $img = iitboyDice_log_img_attachment($logid);
+    }
+    if (in_array('content', _g('log_img_get')) && empty($img)) {
+        $img = iitboyDice_log_img_content($content);
+    }
+    if (in_array('random', _g('log_img_get')) && empty($img)) {
+        $img = iitboyDice_log_img_random($logid);
+    }
+    return $img ?: _g('log_img_default');
 }
 
 /**
@@ -317,8 +377,8 @@ function iitboyDice_log_img($logid = 0)
 function iitboyDice_log_img_attachment($logid)
 {
     $db = Database::getInstance();
-    $row = $db->fetch_array($db->query("SELECT filepath FROM " . DB_PREFIX . "attachment WHERE blogid=" . $logid . " LIMIT 1"));
-    return $row['filepath'] ? BLOG_URL . substr($row['filepath'], 3, strlen($row['filepath'])) : false;
+    $row = $db->fetch_array($db->query("SELECT filepath FROM " . DB_PREFIX . "attachment WHERE blogid='$logid'"));
+    return !empty($row['filepath']) ? BLOG_URL . substr($row['filepath'], 3, strlen($row['filepath'])) : false;
 }
 
 /**
@@ -422,15 +482,16 @@ function iitboyDice_log_baidu($logid)
     }
     $ico = '<i class="fa fa-paw"></i> ';
     switch ($res) {
-        case 'unknown':
-            return $ico . '<a rel="external nofollow" title="点击查看百度收录" target="_blank" href="https://www.baidu.com/s?wd=' . Url::log($logid) . '">未知收录</a>';
-            break;
         case 'submit':
         case 'none':
             return ROLE == ROLE_ADMIN ? $ico . '<a style="color:red;" rel="external nofollow" title="点击提交百度收录！" target="_blank" href="http://zhanzhang.baidu.com/sitesubmit/index?sitename=' . Url::log($logid) . '">提交收录</a>' : $ico . '百度未收录';
             break;
         case 'exist':
             return $ico . '百度已收录';
+            break;
+        case 'unknown':
+        default:
+            return $ico . '<a rel="external nofollow" title="点击查看百度收录" target="_blank" href="https://www.baidu.com/s?wd=' . Url::log($logid) . '">未知收录</a>';
             break;
     }
 }
@@ -446,6 +507,7 @@ function iitboyDice_log_edit($logid, $author)
     if (ROLE == ROLE_ADMIN || $author == UID) {
         return '<i class="fa fa-edit"></i> <a href="' . BLOG_URL . 'admin/' . (strpos(Option::EMLOG_VERSION, 'pro') === false ? 'write_log' : 'article') . '.php?action=edit&gid=' . $logid . '" target="_blank">编辑</a>';
     }
+    return false;
 }
 
 /**
@@ -567,7 +629,7 @@ function iitboyDice_related_logs($logData)
 /**
  * 头像
  * @param $email
- * @param $name
+ * @param bool $lazyload
  * @return string
  */
 function iitboyDice_getGravatar($email, $lazyload = true)
@@ -586,7 +648,7 @@ function iitboyDice_getGravatar($email, $lazyload = true)
 
 /**
  * 随机头像
- * @param $name
+ * @param $email
  * @return string
  */
 function iitboyDice_getMultiavatar($email)
@@ -646,7 +708,7 @@ function iitboyDice_cache_dir($dir)
 }
 
 
-function iitboyDice_speeder_replace($replace, $htmlContent, $isStrReplace = false)
+function iitboyDice_replace($replace, $htmlContent, $isStrReplace = false)
 {
     if ($isStrReplace === true) {
         foreach ($replace as $key => $value) {
@@ -667,7 +729,7 @@ function iitboyDice_html_annotation($htmlContent)
     $replace = array(
         '/<!--[^]><!\[](.*?)[^\]]-->/s' => '',
     );
-    return iitboyDice_speeder_replace($replace, $htmlContent);
+    return iitboyDice_replace($replace, $htmlContent);
 }
 
 /**
@@ -688,5 +750,14 @@ function iitboyDice_html_linefeeds_whitespace($htmlContent)
     if (preg_match_all('/(crayon-|<\/pre>)/i', $htmlContent, $matches)) {
         return $htmlContent;
     }
-    return iitboyDice_speeder_replace($replace, $htmlContent);
+    return iitboyDice_replace($replace, $htmlContent);
+}
+
+/**
+ * 验证speeder是否加载
+ * @return bool
+ */
+function iitboyDice_check_speeder()
+{
+    return function_exists('dps_speeder_menu');
 }

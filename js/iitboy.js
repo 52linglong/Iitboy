@@ -29,23 +29,25 @@ function dn() {
     fq = setTimeout("dn()", 50)
 }
 
-let timer;
-
 // 双击自动滚屏
-function initialize() {
-    timer = setInterval("scrollwindow()", 10)
-}
+if (SCROLL) {
+    let timer;
 
-function sc() {
-    clearInterval(timer)
-}
+    function initialize() {
+        timer = setInterval("scrollwindow()", 10)
+    }
 
-function scrollwindow() {
-    window.scrollBy(0, 1)
-}
+    function sc() {
+        clearInterval(timer)
+    }
 
-document.onmousedown = sc;
-document.ondblclick = initialize;
+    function scrollwindow() {
+        window.scrollBy(0, 1)
+    }
+
+    document.onmousedown = sc;
+    document.ondblclick = initialize;
+}
 
 //js 控制 gif 动画播放
 const Gifffer = function () {
@@ -334,4 +336,21 @@ $(function () {
             }, 9000)
         });
     }
+    // 文章列表图片加载失败
+    if (IMGERROR) {
+        function offError(e) {
+            $(e).show().off("error");
+        }
+
+        $(".thumbnail1 img").on("error", function () {
+            this.src = IMGERRORSCR;
+            offError(this);
+        });
+
+        // 文章内容图片加载失败
+        $("#emlogEchoLog img").on("error", function () {
+            $(this).css("display", "none");
+        });
+    }
 });
+

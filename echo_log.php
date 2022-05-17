@@ -9,7 +9,7 @@ if (!defined('EMLOG_ROOT')) {
     <div id="content">
     <div id="contentleftt" style="background-color: rgba(255, 255, 255, 0.6);">
 
-        <div class="biaoti" id="masked"><?php topflg($top); ?><?php echo $log_title; ?></div>
+        <h1 class="biaoti" id="masked"><?php echo $log_title; ?></h1>
         <div class="date2">
             <?php echo iitboyDice_log_sort_all($sortid); ?>&nbsp;
             <i class="fa fa-user"></i> 作者：<?php blog_author($author); ?>&nbsp;
@@ -25,7 +25,7 @@ if (!defined('EMLOG_ROOT')) {
             热度：<?php echo $views; ?>°&nbsp;
         </div>
         <div class="xiantiao"><img src="<?php echo TEMPLATE_URL; ?>images/xiantiao1.png"></div>
-        <div id="zoom"><?php echo $log_content; ?></div>
+        <div id="emlogEchoLog"><?php echo $log_content; ?></div>
         <?php doAction('down_log', $logid); ?>
         <div class="post-tags"><?php echo iitboyDice_log_tags($logid); ?></div>
         <?php if (_g('log_copyright') == 'open'): ?>

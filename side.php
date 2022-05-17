@@ -16,7 +16,7 @@ if (!defined('EMLOG_ROOT')) {
         if (strpos($val, 'custom_wg_') === 0) {
             $callback = 'widget_custom_text';
             if (function_exists($callback)) {
-                call_user_func($callback, htmlspecialchars($custom_widget[$val]['title']), $custom_widget[$val]['content']);
+                call_user_func($callback, htmlspecialchars($custom_widget[$val]['title']), $custom_widget[$val]['content'], $val);
             }
         } else {
             $callback = 'widget_' . $val;

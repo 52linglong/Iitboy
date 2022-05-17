@@ -41,7 +41,9 @@ if (!defined('EMLOG_ROOT')) {
                             <div class="thumbnail1">
                                 <a href="<?php echo $value['log_url']; ?>" title="<?php echo $value['log_title']; ?>">
                                     <div class="boder_round">
-                                        <?php echo _g('lazyload') == 'open' ? '<img src="' . _g('log_img_default') . '" data-original="' . iitboyDice_log_img($value['logid']) . '" class="shake shake-opacity hint--top hint--error lazyload" alt="' . $value['log_title'] . '">' : '<img src="' . iitboyDice_log_img($value['logid']) . '" class="shake shake-opacity hint--top hint--error" alt="' . $value['log_title'] . '">'; ?>
+                                        <?php
+                                        $cover = $value['log_cover'] ?: iitboyDice_log_img($value['logid'], $value['content']);
+                                        echo _g('js_lazyload') == 'open' ? '<img src="' . _g('log_img_default') . '" data-original="' . $cover . '" class="shake shake-opacity hint--top hint--error lazyload" alt="' . $value['log_title'] . '">' : '<img src="' . $cover . '" class="shake shake-opacity hint--top hint--error" alt="' . $value['log_title'] . '">'; ?>
                                     </div>
                                 </a>
                             </div>

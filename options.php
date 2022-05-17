@@ -3,6 +3,7 @@
 !defined('EMLOG_ROOT') && exit('access deined!');
 include_once 'function.php';
 $DTE = iitboyDice_getHeaderData();
+$speeder = iitboyDice_check_speeder() ? '<span style="color: red;">当前功能已被DICE插件接管，此处设置无效</span>' : '';
 $options = array(
     'TplOptionsNavi' => array(
         'type' => 'radio',
@@ -30,7 +31,7 @@ $options = array(
             'cdnjs' => 'CDNJS',
             'close' => '关闭',
         ),
-        'default' => 'bootcdn',
+        'default' => 'close',
         'description' => '稳定、快速、免费的前端开源项目 CDN 加速服务，关闭则使用本地资源'
     ),
     'css_csshake' => array(
@@ -41,8 +42,8 @@ $options = array(
             'open' => '开启',
             'close' => '关闭',
         ),
-        'default' => 'open',
-        'description' => '使DOM元素抖动起来，就是为了好玩，可以关闭'
+        'default' => 'close',
+        'description' => '使DOM元素抖动起来，就是为了好玩'
     ),
     'css_hint' => array(
         'labels' => 'tpl-basic',
@@ -52,8 +53,8 @@ $options = array(
             'open' => '开启',
             'close' => '关闭',
         ),
-        'default' => 'open',
-        'description' => '快速实现tooltips提示样式，就是为了美化，可以关闭'
+        'default' => 'close',
+        'description' => '快速实现tooltips提示样式，就是为了美化'
     ),
     'js_lazyload' => array(
         'labels' => 'tpl-basic',
@@ -63,7 +64,7 @@ $options = array(
             'open' => '开启',
             'close' => '关闭',
         ),
-        'default' => 'open',
+        'default' => 'close',
         'description' => '支持列表文章缩略图、文章正文图片、游客头像，可以关闭'
     ),
     'js_chaffle' => array(
@@ -74,8 +75,8 @@ $options = array(
             'open' => '开启',
             'close' => '关闭',
         ),
-        'default' => 'open',
-        'description' => '允许你洗牌随机字符，可以关闭（仅适用jsDelivr、本地资源）'
+        'default' => 'close',
+        'description' => '允许你洗牌随机字符（仅适用jsDelivr、本地资源）'
     ),
     'js_qrcode' => array(
         'labels' => 'tpl-basic',
@@ -87,6 +88,28 @@ $options = array(
         ),
         'default' => 'open',
         'description' => '动态生成二维码，可以关闭'
+    ),
+    'auto_scroll' => array(
+        'labels' => 'tpl-basic',
+        'type' => 'radio',
+        'name' => '双击自动滚屏',
+        'values' => array(
+            'open' => '开启',
+            'close' => '关闭',
+        ),
+        'default' => 'open',
+        'description' => '鼠标双击自动滚屏，再次点击停止滚屏。'
+    ),
+    'img_error' => array(
+        'labels' => 'tpl-basic',
+        'type' => 'radio',
+        'name' => '图片加载失败',
+        'values' => array(
+            'open' => '开启',
+            'close' => '关闭',
+        ),
+        'default' => 'close',
+        'description' => '图片加载失败，列表页调用列表文章左侧默认图片，内容页隐藏图片。'
     ),
     'bg' => array(
         'labels' => 'tpl-basic',
@@ -192,7 +215,19 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'open',
-        'description' => '开启后自动获取文章图片，文章封面->文章所属图片->正文图片->随机图片->默认图片'
+        'description' => ''
+    ),
+    'log_img_get' => array(
+        'labels' => 'tpl-list',
+        'type' => 'checkbox',
+        'name' => '列表文章左侧图片',
+        'values' => array(
+            'attachment' => '文章附件图片',
+            'content' => '正文图片',
+            'random' => '随机图片',
+        ),
+        'default' => ['random'],
+        'description' => '开启后自动获取文章图片，文章封面->文章附件图片->正文图片->随机图片->默认图片'
     ),
     'log_img_default' => array(
         'labels' => 'tpl-list',
@@ -216,8 +251,8 @@ $options = array(
             'open' => '开启',
             'close' => '关闭',
         ),
-        'default' => 'open',
-        'description' => ''
+        'default' => 'close',
+        'description' => '文章页百度收录，此功能仅供参考，建议关闭。'
     ),
     'log_copyright' => array(
         'labels' => 'tpl-log',
@@ -470,7 +505,7 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'open',
-        'description' => ''
+        'description' => $speeder
     ),
     'html_linefeeds_whitespace' => array(
         'labels' => 'tpl-other',
@@ -481,7 +516,7 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'close',
-        'description' => ''
+        'description' => $speeder
     ),
 );
 

@@ -21,9 +21,10 @@ if (!defined('EMLOG_ROOT')) {
             <br>
             <?php if (_g('foot_dice') == 'open'): ?>
                 版权所有：
-                <a href="<?php echo BLOG_URL; ?>" class="chaffle" data-chaffle="zh"><?php echo $blogname; ?></a>&nbsp;&nbsp;&nbsp;
-                <a href="http://dxoca.cn" target="_blank" title="看看作者还有什么新鲜的“主题”勒？" class="hint--top hint--bounce">主题：<span data-chaffle="cn" data-chaffle-onLoad>寒光唯美式</span></a>&nbsp;&nbsp;
-                <a href="http://www.emlog.net" title="大名鼎鼎的emlog博客系统，地球人都在用。" target="_blank">程序：emlog</a>&nbsp;&nbsp;
+                <a href="<?php echo BLOG_URL; ?>" class="chaffle" data-chaffle="cn"><?php echo $blogname; ?></a>&nbsp;&nbsp;&nbsp;
+                <a href="http://dxoca.cn" target="_blank" title="看看作者还有什么新鲜的“主题”勒？" class="hint--top hint--bounce">主题：<span data-chaffle="cn">寒光唯美式</span></a>&nbsp;&nbsp;
+                <a href="http://www.emlog.net" title="大名鼎鼎的emlog博客系统，地球人都在用。" target="_blank">程序：<span data-chaffle="en" data-chaffle-onLoad>emlog</span></a>&nbsp;&nbsp;
+                <br>
             <?php endif; ?>
             <a href="https://beian.miit.gov.cn" target="_blank"><?php echo $icp; ?></a>&nbsp;&nbsp;
             <?php echo $footer_info; ?>&nbsp;&nbsp;
@@ -55,6 +56,9 @@ if (!defined('EMLOG_ROOT')) {
                     }
                 </script>
             <?php endif; ?>
+            <script>
+
+            </script>
         </div>
     </div>
 <?php if (_g('bgi') == 'open'): ?>
@@ -73,8 +77,10 @@ if (!defined('EMLOG_ROOT')) {
     </body>
     </html>
 <?php
-$html = ob_get_clean();;
-ob_start();
-$html = _g('html_annotation') == 'open' ? iitboyDice_html_annotation($html) : $html;
-$html = _g('html_linefeeds_whitespace') == 'open' ? iitboyDice_html_linefeeds_whitespace($html) : $html;
-echo $html;
+if (!iitboyDice_check_speeder()) {
+    $html = ob_get_clean();
+    ob_start();
+    $html = _g('html_annotation') == 'open' ? iitboyDice_html_annotation($html) : $html;
+    $html = _g('html_linefeeds_whitespace') == 'open' ? iitboyDice_html_linefeeds_whitespace($html) : $html;
+    echo $html;
+}
