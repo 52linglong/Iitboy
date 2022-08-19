@@ -3,7 +3,10 @@
 !defined('EMLOG_ROOT') && exit('access deined!');
 include_once 'function.php';
 $DTE = iitboyDice_getHeaderData();
-$speeder = iitboyDice_check_speeder() ? '<span style="color: red;">当前功能已被DICE插件接管，此处设置无效</span>' : '';
+$dpsSpeeder = iitboyDice_check_dps('speeder_menu');
+$dpsCopyright = iitboyDice_check_dps('article_copyright', 'y', 'article');
+$dpsRelated = iitboyDice_check_dps('article_related', 'y', 'article');
+
 $options = array(
     'TplOptionsNavi' => array(
         'type' => 'radio',
@@ -263,7 +266,7 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'open',
-        'description' => ''
+        'description' => $dpsCopyright
     ),
     'log_qrcode' => array(
         'labels' => 'tpl-log',
@@ -274,14 +277,14 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'open',
-        'description' => '二维码启用规则，JS 二维码 > 文章页二维码 API'
+        'description' => $dpsCopyright?:'二维码启用规则，JS 二维码 > 文章页二维码 API'
     ),
     'log_qrcode_api' => array(
         'labels' => 'tpl-log',
         'type' => 'text',
         'name' => '文章页二维码 API',
         'default' => 'https://api.isoyu.com/qr/?m=2&e=L&p=3&url=',
-        'description' => ''
+        'description' => $dpsCopyright
     ),
     'related' => array(
         'labels' => 'tpl-log',
@@ -292,6 +295,7 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'open',
+        'description' => $dpsRelated
     ),
     'related_type' => array(
         'labels' => 'tpl-log',
@@ -302,6 +306,7 @@ $options = array(
             'tag' => '标签',
         ),
         'default' => 'sort',
+        'description' => $dpsRelated
     ),
     'related_desc' => array(
         'labels' => 'tpl-log',
@@ -315,13 +320,14 @@ $options = array(
             'comnum_asc' => '评论数(升序)',
         ),
         'default' => 'rand',
+        'description' => $dpsRelated
     ),
     'related_num' => array(
         'labels' => 'tpl-log',
         'type' => 'text',
         'name' => '相关文章显示数量',
         'default' => '6',
-        'description' => '设置相关文章显示数量，直接填写数字即可。',
+        'description' => $dpsRelated ?: '设置相关文章显示数量，直接填写数字即可。',
     ),
     'blogger' => array(
         'labels' => 'tpl-side',
@@ -505,7 +511,7 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'open',
-        'description' => $speeder
+        'description' => $dpsSpeeder
     ),
     'html_linefeeds_whitespace' => array(
         'labels' => 'tpl-other',
@@ -516,7 +522,7 @@ $options = array(
             'close' => '关闭',
         ),
         'default' => 'close',
-        'description' => $speeder
+        'description' => $dpsSpeeder
     ),
 );
 

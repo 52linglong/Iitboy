@@ -77,10 +77,4 @@ if (!defined('EMLOG_ROOT')) {
     </body>
     </html>
 <?php
-if (!iitboyDice_check_speeder()) {
-    $html = ob_get_clean();
-    ob_start();
-    $html = _g('html_annotation') == 'open' ? iitboyDice_html_annotation($html) : $html;
-    $html = _g('html_linefeeds_whitespace') == 'open' ? iitboyDice_html_linefeeds_whitespace($html) : $html;
-    echo $html;
-}
+echo iitboyDice_html_speeder();

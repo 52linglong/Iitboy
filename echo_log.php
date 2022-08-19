@@ -28,29 +28,9 @@ if (!defined('EMLOG_ROOT')) {
         <div id="emlogEchoLog"><?php echo $log_content; ?></div>
         <?php doAction('down_log', $logid); ?>
         <div class="post-tags"><?php echo iitboyDice_log_tags($logid); ?></div>
-        <?php if (_g('log_copyright') == 'open'): ?>
-            <div id="banquan">
-                <?php if (_g('log_qrcode') == 'open'): ?>
-                    <div id="log-qrcode" class="tupian hint--right hint--rounded" title="这篇文章太棒了，我要分享给我的小伙伴们！&#10;&#10; 1、用手机扫二维码。&#10;&#10; 2、点右上角就可以分享到朋友圈啦。">
-                        <?php if (_g('js_qrcode') == 'close'): ?>
-                            <img src="<?php echo (empty(_g('log_qrcode_api')) ? 'https://api.isoyu.com/qr/?m=2&e=L&p=3&url=' : _g('log_qrcode_api')) . Url::log($logid); ?>" alt="二维码加载中...">
-                        <?php endif; ?>
-                    </div>
-                <?php if (_g('js_qrcode') == 'open'): ?>
-                    <script>$('#log-qrcode').qrcode({text: window.location.href, size: 100, quiet: 2,});</script>
-                <?php endif; ?>
-                <?php endif; ?>
-                <div class="xinxi">
-                    <span class="zuozhe">本文作者：</span><?php blog_author($author); ?> &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="biaoti2">文章标题：</span>
-                    <a href="<?php echo Url::log($logid); ?>"><?php echo $log_title; ?></a><br>
-                    <span class="blog_url">本文地址：</span><a href="<?php echo Url::log($logid); ?>"><?php echo Url::log($logid); ?></a><br>
-                    <b>版权声明：</b>若无注明，本文皆为“<span class="blog_name"><?php echo $blogname; ?></span>”原创，转载请保留文章出处。
-                </div>
-                <div id="gaodu1"></div>
-            </div>
-        <?php endif; ?>
+        <?php echo iitboyDice_log_copyright($logData); ?>
         <?php doAction('copyright_log', $logData); ?>
+        <?php doAction('log_copyright', $logData); ?>
         <div class="cutline"><span><a href="#">正文到此结束</a></span></div>
 
         <div class="rkdic">

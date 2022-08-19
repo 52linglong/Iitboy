@@ -7,6 +7,24 @@
  * Modify：2022/1/28
  */
 
+/**
+ * 验证dps是否加载
+ * @return bool
+ */
+function iitboyDice_check_dps($key, $value = 'y', $tool = 'tools')
+{
+    if (function_exists('dps_get')) {
+        if (dps_get($key, $tool) == $value) {
+            return '<span style="color: red;">当前功能已被DICE插件接管，此处设置无效</span>';
+        }
+    }
+    return '';
+}
+
+/**
+ * 模板设置说明
+ * @return array|bool
+ */
 function iitboyDice_getHeaderData()
 {
     if (!is_file(dirname(__FILE__) . '/header.php')) {
@@ -227,7 +245,7 @@ function iitboyDice_cdn()
 function iitboyDice_dns_prefetch()
 {
     $ary = iitboyDice_cdn();
-    return empty($ary[_g('cdn')]) ? PHP_EOL : '<meta http-equiv="x-dns-prefetch-control" content="on">
+    return empty($ary[_g('cdn')]['dns']) ? PHP_EOL : '<meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="dns-prefetch" href="' . $ary[_g('cdn')]['dns'] . '">' . PHP_EOL;
 }
 
@@ -352,19 +370,24 @@ function iitboyDice_twitter()
  * 文章缩略图
  * @param int $logid
  * @param string $content
+ * @param array $params
  * @return bool|mixed|string
  */
-function iitboyDice_log_img($logid = 0, $content = '')
+function iitboyDice_log_img($logid = 0, $content = '', ...$params)
 {
     $img = '';
-    if (in_array('attachment', _g('log_img_get')) && empty($img)) {
-        $img = iitboyDice_log_img_attachment($logid);
-    }
-    if (in_array('content', _g('log_img_get')) && empty($img)) {
-        $img = iitboyDice_log_img_content($content);
-    }
-    if (in_array('random', _g('log_img_get')) && empty($img)) {
-        $img = iitboyDice_log_img_random($logid);
+    if (function_exists('dps_blog_thumbnail')) {
+        $img = dps_blog_thumbnail($logid, $params[0]['log_cover'], $content);
+    } else {
+        if (in_array('attachment', _g('log_img_get')) && empty($img)) {
+            $img = iitboyDice_log_img_attachment($logid);
+        }
+        if (in_array('content', _g('log_img_get')) && empty($img)) {
+            $img = iitboyDice_log_img_content($content);
+        }
+        if (in_array('random', _g('log_img_get')) && empty($img)) {
+            $img = iitboyDice_log_img_random($logid);
+        }
     }
     return $img ?: _g('log_img_default');
 }
@@ -549,6 +572,34 @@ function iitboyDice_log_tags($logid)
     return $tag ?: '<span class="color">&nbsp;╭(′▽`)╯标签走丢啦~</span>';
 }
 
+function iitboyDice_log_copyright($logData)
+{
+    $log_copyright = '';
+    if (function_exists('dps_get_article')) {
+        if (dps_get_article('article_copyright') == 'y') {
+            $log_copyright = true;
+        }
+    }
+    if (empty($log_copyright)) {
+        extract($logData);
+        if (_g('log_copyright') == 'open') {
+            $log_copyright = '<div id="banquan">';
+            if (_g('log_qrcode') == 'open') {
+                $log_copyright .= '<div id="log-qrcode" class="tupian hint--right hint--rounded" title="这篇文章太棒了，我要分享给我的小伙伴们！&#10;&#10; 1、用手机扫二维码。&#10;&#10; 2、点右上角就可以分享到朋友圈啦。">';
+                if (_g('js_qrcode') == 'close') {
+                    $log_copyright .= '<img src="' . (empty(_g('log_qrcode_api')) ? 'https://api.isoyu.com/qr/?m=2&e=L&p=3&url=' : _g('log_qrcode_api')) . Url::log($logid) . '" alt="二维码加载中...">';
+                }
+                $log_copyright .= '</div>';
+                if (_g('js_qrcode') == 'open') {
+                    $log_copyright .= '<script>$("#log-qrcode").qrcode({text: window.location.href, size: 100, quiet: 2,});</script>';
+                }
+            }
+            $log_copyright .= '<div class="xinxi"><span class="zuozhe">本文作者：</span>' . blog_author($author) . ' &nbsp;&nbsp;&nbsp;&nbsp;<span class="biaoti2">文章标题：</span><a href="' . Url::log($logid) . '">' . $log_title . '</a><br><span class="blog_url">本文地址：</span><a href="' . Url::log($logid) . '">' . Url::log($logid) . '</a><br><b>版权声明：</b>若无注明，本文皆为“<span class="blog_name">' . $blogname . '</span>”原创，转载请保留文章出处。</div><div id="gaodu1"></div></div>';
+        }
+        return $log_copyright;
+    }
+}
+
 /**
  * 相关文章
  * @param $logData
@@ -556,74 +607,83 @@ function iitboyDice_log_tags($logid)
  */
 function iitboyDice_related_logs($logData)
 {
-    $related_log_type = _g('related_type');
-    $related_log_sort = _g('related_desc');
-    $related_log_num = _g('related_num');
+    $log_related = '';
+    if (function_exists('dps_get_article')) {
+        if (dps_get_article('article_related') == 'y') {
+            $log_related = true;
+        }
+    }
 
-    $db = Database::getInstance();
-    extract($logData);
+    if (empty($log_related)) {
+        $related_log_type = _g('related_type');
+        $related_log_sort = _g('related_desc');
+        $related_log_num = _g('related_num');
 
-    $sql = "SELECT gid,title,sortid FROM " . DB_PREFIX . "blog WHERE hide='n' AND type='blog'";
-    if ($related_log_type == 'tag') {
-        $Tag_Model = new Tag_Model();
-        //根据文章id获取标签id
-        $tagids = iitboyDice_getTagIdsFromBlogId($logid);
-        $related_log_id_str = [];
-        foreach ($tagids as $tag) {
-            $logids = $Tag_Model->getBlogIdsFromTagId($tag);
-            foreach ($logids as $log) {
-                array_push($related_log_id_str, $log);
+        $db = Database::getInstance();
+        extract($logData);
+
+        $sql = "SELECT gid,title,sortid FROM " . DB_PREFIX . "blog WHERE hide='n' AND type='blog'";
+        if ($related_log_type == 'tag') {
+            $Tag_Model = new Tag_Model();
+            //根据文章id获取标签id
+            $tagids = iitboyDice_getTagIdsFromBlogId($logid);
+            $related_log_id_str = [];
+            foreach ($tagids as $tag) {
+                $logids = $Tag_Model->getBlogIdsFromTagId($tag);
+                foreach ($logids as $log) {
+                    array_push($related_log_id_str, $log);
+                }
+            }
+            $related_log_id_str = implode(',', array_unique($related_log_id_str)) ?: 0;
+            $sql .= " AND gid!=$logid AND gid IN ($related_log_id_str)";
+        } else {
+            $sql .= " AND gid!=$logid AND sortid=$sortid";
+        }
+        switch ($related_log_sort) {
+            case 'views_desc':
+            {
+                $sql .= " ORDER BY views DESC";
+                break;
+            }
+            case 'views_asc':
+            {
+                $sql .= " ORDER BY views ASC";
+                break;
+            }
+            case 'comnum_desc':
+            {
+                $sql .= " ORDER BY comnum DESC";
+                break;
+            }
+            case 'comnum_asc':
+            {
+                $sql .= " ORDER BY comnum ASC";
+                break;
+            }
+            case 'rand':
+            {
+                $sql .= " ORDER BY rand()";
+                break;
             }
         }
-        $related_log_id_str = implode(',', array_unique($related_log_id_str)) ?: 0;
-        $sql .= " AND gid!=$logid AND gid IN ($related_log_id_str)";
-    } else {
-        $sql .= " AND gid!=$logid AND sortid=$sortid";
+        $sql .= " LIMIT 0,$related_log_num";
+        $related_logs = array();
+        $query = $db->query($sql);
+        while ($row = $db->fetch_array($query)) {
+            $row['gid'] = intval($row['gid']);
+            $row['title'] = htmlspecialchars($row['title']);
+            $related_logs[] = $row;
+        }
+
+        if (!empty($related_logs)) {
+            $log_related = '<div class="gxq"><div class="bti"><i class="fa fa-folder-open"></i> <span data-chaffle="cn">相关文章</span></div><ul>';
+            foreach ($related_logs as $val) {
+                $log_related .= '<li><i class="fa fa-dot-circle-o"><a href="' . Url::log($val['gid']) . '" title="查看文章:' . $val['title'] . '" class="shake shake-little">' . $val['title'] . '</a></i></li>';
+            }
+            $log_related .= '</ul><div id="gaodu1"></div></div>';
+        }
+        return $log_related;
     }
-    switch ($related_log_sort) {
-        case 'views_desc':
-        {
-            $sql .= " ORDER BY views DESC";
-            break;
-        }
-        case 'views_asc':
-        {
-            $sql .= " ORDER BY views ASC";
-            break;
-        }
-        case 'comnum_desc':
-        {
-            $sql .= " ORDER BY comnum DESC";
-            break;
-        }
-        case 'comnum_asc':
-        {
-            $sql .= " ORDER BY comnum ASC";
-            break;
-        }
-        case 'rand':
-        {
-            $sql .= " ORDER BY rand()";
-            break;
-        }
-    }
-    $sql .= " LIMIT 0,$related_log_num";
-    $related_logs = array();
-    $query = $db->query($sql);
-    while ($row = $db->fetch_array($query)) {
-        $row['gid'] = intval($row['gid']);
-        $row['title'] = htmlspecialchars($row['title']);
-        $related_logs[] = $row;
-    }
-    $out = '';
-    if (!empty($related_logs)) {
-        $out .= '<div class="gxq"><div class="bti"><i class="fa fa-folder-open"></i> <span data-chaffle="cn">相关文章</span></div><ul>';
-        foreach ($related_logs as $val) {
-            $out .= '<li><i class="fa fa-dot-circle-o"><a href="' . Url::log($val['gid']) . '" title="查看文章:' . $val['title'] . '" class="shake shake-little">' . $val['title'] . '</a></i></li>';
-        }
-        $out .= '</ul><div id="gaodu1"></div></div>';
-    }
-    return $out;
 }
 
 /**
@@ -632,15 +692,18 @@ function iitboyDice_related_logs($logData)
  * @param bool $lazyload
  * @return string
  */
-function iitboyDice_getGravatar($email, $lazyload = true)
+function iitboyDice_getGravatar($comment, $lazyload = true)
 {
-    $email = strtolower(trim($email));
-    if (empty($email)) {
-        $src = iitboyDice_getMultiavatar($email);
-    } else if (preg_match("/^[1-9]\d{4,10}@qq\.com/i", $email)) {
-        $src = iitboyDice_getAvatarCache('https://q1.qlogo.cn/g?b=qq&nk=' . str_ireplace('@qq.com', '', $email) . '&s=100', 'qq');
-    } else {
-        $src = iitboyDice_getAvatarCache(getGravatar($email), 'gr');
+    $src = dps_getAvatar($comment);
+    if (empty($src)) {
+        $email = is_array($comment) ? $comment['mail'] : strtolower(trim($comment));
+        if (empty($email)) {
+            $src = iitboyDice_getMultiavatar($email);
+        } else if (preg_match("/^[1-9]\d{4,10}@qq\.com/i", $email)) {
+            $src = iitboyDice_getAvatarCache('https://q1.qlogo.cn/g?b=qq&nk=' . str_ireplace('@qq.com', '', $email) . '&s=100', 'qq');
+        } else {
+            $src = iitboyDice_getAvatarCache(getGravatar($email), 'gr');
+        }
     }
     return (_g('lazyload') == 'open' && $lazyload) ? '<img src="' . _g('avatar') . '" data-original="' . $src . '" class="lazyload">' : '<img src="' . $src . '">';
 }
@@ -753,11 +816,20 @@ function iitboyDice_html_linefeeds_whitespace($htmlContent)
     return iitboyDice_replace($replace, $htmlContent);
 }
 
-/**
- * 验证speeder是否加载
- * @return bool
- */
-function iitboyDice_check_speeder()
-{
-    return function_exists('dps_speeder_menu');
+
+function iitboyDice_html_speeder(){
+    $html_speeder = '';
+    if (function_exists('dps_get')) {
+        if (dps_get('speeder_menu','tools') == 'y') {
+            $html_speeder = true;
+        }
+    }
+
+    if (empty($html_speeder)) {
+        $html = ob_get_clean();
+        ob_start();
+        $html = _g('html_annotation') == 'open' ? iitboyDice_html_annotation($html) : $html;
+        $html = _g('html_linefeeds_whitespace') == 'open' ? iitboyDice_html_linefeeds_whitespace($html) : $html;
+        echo $html;
+    }
 }

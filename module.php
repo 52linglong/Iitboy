@@ -129,7 +129,7 @@ function widget_newcomm($title)
                     $url = Url::comment($value['gid'], $value['page'], $value['cid']);
                     ?>
                     <li id="comment">
-                        <?php echo iitboyDice_getGravatar($value['mail'], false); ?>
+                        <?php echo iitboyDice_getGravatar($value, false); ?>
                         <span id="mzi"><?php echo $value['name']; ?></span> 说：
                         <br/><a title="<?php echo $value['content']; ?>" href="<?php echo $url; ?>"><?php echo $value['content']; ?></a>
                     </li>
@@ -536,7 +536,7 @@ function blog_comments($comments)
         <div class="comment" id="comment-<?php echo $comment['cid']; ?>">
             <a name="<?php echo $comment['cid']; ?>"></a>
             <?php if ($isGravatar == 'y'): ?>
-                <div class="avatar"><?php echo iitboyDice_getGravatar($comment['mail']); ?></div>
+                <div class="avatar"><?php echo iitboyDice_getGravatar($comment); ?></div>
                 <div id="mzsj">
                     <span class="juli1"><?php echo empty($comment['url']) ? $comment['poster'] : '<a href="' . $comment['url'] . '" target="_blank">' . $comment['poster'] . '</a>'; ?></span><span class="comment-time"><?php echo $comment['date']; ?></span>
                 </div>
@@ -565,7 +565,7 @@ function blog_comments_children($comments, $children)
         <div class="comment comment-children" id="comment-<?php echo $comment['cid']; ?>">
             <a name="<?php echo $comment['cid']; ?>"></a>
             <?php if ($isGravatar == 'y'): ?>
-                <div class="avatar"><?php echo iitboyDice_getGravatar($comment['mail']); ?></div>
+                <div class="avatar"><?php echo iitboyDice_getGravatar($comment); ?></div>
                 <div id="mzsj_2">
                     <span class="juli2"><?php echo empty($comment['url']) ? $comment['poster'] : '<a href="' . $comment['url'] . '" target="_blank">' . $comment['poster'] . '</a>'; ?></span><span class="comment-time"><?php echo $comment['date']; ?></span>
                 </div>
@@ -626,7 +626,7 @@ function blog_tool_ishome()
     if (BLOG_URL . trim(Dispatcher::setPath(), '/') == BLOG_URL) {
         return true;
     } else {
-        return FALSE;
+        return false;
     }
 }
 

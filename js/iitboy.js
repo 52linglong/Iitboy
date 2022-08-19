@@ -311,9 +311,9 @@ $(document).ready(function () {
 
 // 自定义
 $(function () {
-    if (LAZYLOAD) {
+    if (LAZYLOAD && $('.lazyload').length > 0) {
         // 图片延迟加载
-        $("img.lazyload").lazyload({effect: "fadeIn", threshold: 200});
+        $(".lazyload").lazyload({effect: "fadeIn", threshold: 200});
         // 调整加载
         $("html,body").animate({scrollTop: 1}, 500);
     }

@@ -42,7 +42,7 @@ if (!defined('EMLOG_ROOT')) {
                                 <a href="<?php echo $value['log_url']; ?>" title="<?php echo $value['log_title']; ?>">
                                     <div class="boder_round">
                                         <?php
-                                        $cover = $value['log_cover'] ?: iitboyDice_log_img($value['logid'], $value['content']);
+                                        $cover = $value['log_cover'] ?: iitboyDice_log_img($value['logid'], $value['content'],$value);
                                         echo _g('js_lazyload') == 'open' ? '<img src="' . _g('log_img_default') . '" data-original="' . $cover . '" class="shake shake-opacity hint--top hint--error lazyload" alt="' . $value['log_title'] . '">' : '<img src="' . $cover . '" class="shake shake-opacity hint--top hint--error" alt="' . $value['log_title'] . '">'; ?>
                                     </div>
                                 </a>
